@@ -15,17 +15,18 @@ namespace CPE200Lab1
         private bool hasDot;
         private bool isAllowBack;
         private bool isAfterOperater;
-        private bool isAfterEqual;
+        private bool isAfterPressEqual;
         private string firstOperand;
         private string operate;
 
         private void resetAll()
         {
+            firstOperand = null;
             lblDisplay.Text = "0";
             isAllowBack = true;
             hasDot = false;
             isAfterOperater = false;
-            isAfterEqual = false;
+            isAfterPressEqual = false;
         }
 
         private string calculate(string operate, string firstOperand, string secondOperand, int maxOutputSize = 8)
@@ -80,7 +81,7 @@ namespace CPE200Lab1
             {
                 return;
             }
-            if (isAfterEqual)
+            if (isAfterPressEqual)
             {
                 resetAll();
             }
@@ -112,19 +113,37 @@ namespace CPE200Lab1
             {
                 return;
             }
-            operate = ((Button)sender).Text;
-            switch (operate)
+            if (firstOperand != null)
             {
-                case "+":
-                case "-":
-                case "X":
-                case "÷":
-                    firstOperand = lblDisplay.Text;
-                    isAfterOperater = true;
-                    break;
-                case "%":
-                    // your code here
-                    break;
+                string secondOperand = lblDisplay.Text;
+                string result = calculate(operate, firstOperand, secondOperand);
+                if (result is "E" || result.Length > 8)
+                {
+                    lblDisplay.Text = "Error";
+                }
+                else
+                {
+                    lblDisplay.Text = result;
+                }
+                firstOperand = lblDisplay.Text;
+                operate = ((Button)sender).Text;
+                isAfterOperater = true;
+            } else
+            {
+                operate = ((Button)sender).Text;
+                switch (operate)
+                {
+                    case "+":
+                    case "-":
+                    case "X":
+                    case "÷":
+                        firstOperand = lblDisplay.Text;
+                        isAfterOperater = true;
+                        break;
+                    case "%":
+                        // your code here
+                        break;
+                }
             }
             isAllowBack = false;
         }
@@ -145,7 +164,7 @@ namespace CPE200Lab1
             {
                 lblDisplay.Text = result;
             }
-            isAfterEqual = true;
+            isAfterPressEqual = true;
         }
 
         private void btnDot_Click(object sender, EventArgs e)
@@ -154,7 +173,7 @@ namespace CPE200Lab1
             {
                 return;
             }
-            if (isAfterEqual)
+            if (isAfterPressEqual)
             {
                 resetAll();
             }
@@ -175,7 +194,7 @@ namespace CPE200Lab1
             {
                 return;
             }
-            if (isAfterEqual)
+            if (isAfterPressEqual)
             {
                 resetAll();
             }
@@ -204,7 +223,7 @@ namespace CPE200Lab1
             {
                 return;
             }
-            if (isAfterEqual)
+            if (isAfterPressEqual)
             {
                 return;
             }
